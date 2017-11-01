@@ -1,0 +1,37 @@
+To deploy a given number of vm's from scratch (cdrom):
+------------------------------------------------------
+
+Ensure ks-labmoll.cfg or whatever is specified inside the script is ready
+to go.
+
+./provision-kvm-bulk.sh moll-srv 2048 2 20 172.26.0.20 5
+
+
+
+To deploy a single virtual machine from scratch (cdrom):
+--------------------------------------------------------
+
+Ensure ks-labmoll.cfg or whatever is specified inside the script is ready
+to go.
+
+./provision-kvm-bulk.sh moll-srv 2048 2 20 172.26.0.20 1
+
+
+
+To deploy from network and not using cdrom:
+-------------------------------------------
+Modify hardcored variables inside.
+
+./provision-kvm-net.sh
+
+
+To deploy cloning a machine (very fast):
+----------------------------------------
+
+./clone-kvm-bulk.sh moll-srv 2048 1 20 172.26.0.20 centos7-template 3
+
+
+Execute without parameters to see help.
+
+BUGS:
+When creating a new vm to clone, you must remove qemu-ga auto-created device. See https://bugzilla.redhat.com/show_bug.cgi?id=1270696 .

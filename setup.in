@@ -1,0 +1,12 @@
+#!/bin/bash
+
+cat << xxEOFxx > /etc/sysconfig/network-scripts/ifcfg-eth1
+TYPE=Ethernet
+BOOTPROTO=static
+DEFROUTE=no
+ONBOOT=yes
+DEVICE=__DEVVIRBR0__
+IPADDR=__IPVIRBR0__
+NETMASK=__MASKVIRBR0__
+xxEOFxx
+

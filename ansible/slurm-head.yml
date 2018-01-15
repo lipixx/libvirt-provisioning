@@ -1,0 +1,13 @@
+- hosts: moll-head
+  remote_user: root
+  tasks:
+     - name: install slurm components
+       yum: state=latest name={{item}}
+       with_items:
+         - mariadb-server
+
+     - name: enable service mariadb
+       systemd: enabled=yes name=mariadb
+
+     - name: Make sure a mariadb is running
+       systemd: state=started name=mariadb

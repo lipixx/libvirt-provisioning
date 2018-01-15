@@ -1,0 +1,22 @@
+- hosts: moll-all
+  remote_user: root
+  tasks:
+    - name: create directories
+      file:
+       path: /opt/slurm/
+       state: directory
+       owner: slurm
+       group: slurm
+       mode: 0775
+       recurse: yes
+
+    - name: Sync nfs slurm dir to opt
+      synchronize:
+        src: /nfs/slurm/17.02/inst/
+        dest: /opt/slurm/17.02/
+
+    # - name: Create symlink to global etc
+    #   file:
+    #    src: /nfs/slurm/17.02/etc
+    #    dest: /opt/slurm/17.02/etc
+    #    state: link

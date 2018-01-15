@@ -1,0 +1,49 @@
+---
+- hosts: moll-all
+  remote_user: root
+  vars:
+   users:
+     - username: lipi
+       use_sudo: yes
+       home_dir: "/nfs/home/lipi"
+       groups: "wheel"
+       group: "users"
+       uid: 1500
+       password: '$6$NESbCpB96V4/eQJn$2SuXZKMObMQWzRU0rKoSOlmk54LAfbqcmr34Ygnf4KU3IHeb6F/F5BFZLVEynyv0tbTXX3SmxX9La30mM4hFc/'
+
+     - username: test1
+       use_sudo: yes
+       home_dir: "/nfs/home/test1"
+       groups: "wheel"
+       group: "users"
+       uid: 1501
+       password: '$6$NESbCpB96V4/eQJn$2SuXZKMObMQWzRU0rKoSOlmk54LAfbqcmr34Ygnf4KU3IHeb6F/F5BFZLVEynyv0tbTXX3SmxX9La30mM4hFc/'
+
+  tasks:
+   - name: Add users | create users, shell, home dirs
+     user:
+      name: '{{ item.username }}'
+      uid: '{{ item.uid }}'
+      groups: '{{ item.groups }}'
+      group: '{{ item.group }}'
+      shell: /bin/bash
+      createhome: yes
+      generate_ssh_key: yes
+      home: '{{ item.home_dir }}'
+      password: '{{ item.password }}'
+     with_items: '{{users}}'
+
+   - name: Setup | authorized key upload
+     authorized_key:
+       user: '{{ item.username }}'
+       key: "{{ lookup('file', '{{ item.home_dir }}/.ssh/id_rsa.pub') }}"
+     with_items: '{{users}}'
+
+   - name: Sudoers | update sudoers file and validate
+     lineinfile: "dest=/etc/sudoers
+      insertafter=EOF
+      line='{{ item.username }} ALL=(ALL) NOPASSWD: ALL'
+      regexp='^'{{ item.username }}' .*'
+      state=present"
+     when: '{{ item.use_sudo }} == True'
+     with_items: '{{users}}'

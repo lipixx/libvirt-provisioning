@@ -1,0 +1,51 @@
+- hosts: moll-all
+  remote_user: root
+  tasks:
+   - name: install base packages
+     yum: state=latest name={{item}}
+     with_items:
+       - xorg-x11-server-Xorg
+       - xorg-x11-xauth
+       - xorg-x11-apps
+       - emacs-nox
+       - hwloc
+       - flex
+       - libssh2
+       - ncurses
+       - expect
+       - rsync
+       - numactl
+       - libcurl
+       - screen
+       - psmisc
+
+   - name: populate hosts
+     copy:
+       src: /etc/hosts
+       dest: /etc/hosts
+       backup: yes
+
+   - name: Add multiple repositories into the same file (2/2)
+     yum_repository:
+        name: llit
+        description: Llit repositori
+        baseurl: file:///nfs/llitrepo/
+        enabled: yes
+        gpgcheck: no
+
+   # Handler showing how to clean yum metadata cache
+   - name: yum-clean-metadata
+     command: yum clean metadata
+     args:
+        warn: no
+
+   # Disable SELinux
+   - name: Disable SELinux
+     selinux:
+      state: disabled
+
+   - name: Stop and disable firewalld
+     service:
+      name: firewalld
+      state: stopped
+      enabled: false

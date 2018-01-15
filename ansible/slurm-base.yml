@@ -1,0 +1,32 @@
+- hosts: moll-all:llit-srv
+  remote_user: root
+  tasks:
+    - name: install slurm components
+      yum: state=latest name={{item}}
+      with_items:
+        - munge
+
+    - name: populate munge key
+      copy:
+       src: /etc/munge/munge.key
+       dest: /etc/munge/munge.key
+
+    - name: enable service munge
+      systemd: enabled=yes name=munge
+
+    - name: Make sure a munge is running
+      systemd: state=started name=munge
+
+    - group:
+       name: slurm
+       state: present
+       gid: 2000
+
+    - user:
+       name: slurm
+       comment: "SLURM User"
+       uid: 2000
+       group: slurm
+       createhome: no
+       home: /nfs/home/slurm
+       password: $6$7fa7198746c9b7c4$VnTx1eleMN9jvB16PjApdHibK8LP9LPaFhMozgOfZ8WPVyDaVTp26Wf7052W9YECFNWLiPXAfQXxYZ4.a9DJ60

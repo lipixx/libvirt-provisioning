@@ -1,0 +1,34 @@
+- hosts: moll-head:llit-srv
+  remote_user: root
+  tasks:
+   - name: install development for slurm
+     yum: state=latest name={{item}}
+     with_items:
+       - kernel-devel
+       - gcc
+       - cpp
+       - autoconf
+       - automake
+       - gdb
+       - valgrind
+       - strace
+       - ltrace
+       - cscope
+       - libevent-devel
+       - flex-devel
+       - hwloc-devel
+       - openssl-devel
+       - libssh2-devel
+       - mysql-devel
+       - pam-devel
+       - gtk2-devel
+       - ncurses-devel
+       - lua-devel
+       - rrdtool-devel
+       - rpm-build
+       - bzip2-devel
+       - createrepo
+       - munge-devel
+       - libcurl-devel
+       - numactl-devel
+       - readline-devel

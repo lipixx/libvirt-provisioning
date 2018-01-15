@@ -1,0 +1,22 @@
+- hosts: moll-all
+  remote_user: root
+  tasks:
+   - name: install lustre client
+     yum: state=latest name={{item}}
+     with_items:
+       - lustre-client
+
+   - name: Ensure scratch directory exists
+     action: file path=/scratch state=directory
+
+   - name: populate hosts
+     copy:
+       src: /etc/hosts
+       dest: /etc/hosts
+       backup: yes
+
+   - name: populate modprobe.d/lustre.conf
+     copy:
+       src: /nfs/ansible_configs/modprobe_lustre.conf
+       dest: /etc/modprobe.d/lustre.conf
+       backup: yes

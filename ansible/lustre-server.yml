@@ -1,0 +1,11 @@
+- hosts: moll-lustre20
+  remote_user: root
+  tasks:
+   - name: install e2fsprogs and lustre packages
+     yum: state=latest name={{item}}
+     with_items:
+       - e2fsprogs
+       - e2fsprogs-libs
+       - e2fsprogs-static
+       - libcom_err
+       - libss

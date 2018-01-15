@@ -32,3 +32,5 @@
        - libcurl-devel
        - numactl-devel
        - readline-devel
+       - hdf5
+       - hdf5-devel

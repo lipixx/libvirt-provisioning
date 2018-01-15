@@ -35,3 +35,10 @@ Execute without parameters to see help.
 
 BUGS:
 When creating a new vm to clone, you must remove qemu-ga auto-created device. See https://bugzilla.redhat.com/show_bug.cgi?id=1270696 .
+
+
+
+
+
+
+"Usage: ./provision-kvm-bulk.sh <vm_name_pattern> <memory(MiB)> <vcpus> <hdsize(GB)> <start_private_ip> <base_domain> <nhosts>"
